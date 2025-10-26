@@ -60,15 +60,18 @@ export default function Select() {
 
     function handleDateSelect() {
         if (maxSelected === 1) {
-            // TODO: fetch to start individual chat
-            // fetch(`${BACKEND_URL}/start_chat`, {
-            //     method: "POST",
-            //     body: JSON.stringify({
-            //         character: selectedCharacters[0],
-            //     }),
-            // });
+            // fetch to start individual chat
+            fetch(`${BACKEND_URL}/start_chat`, {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify({
+                    character: selectedCharacters[0],
+                }),
+            });
         } else if (maxSelected === 2) {
-            // TODO: fetch to start group chat
+            // fetch to start group chat
             fetch(`${BACKEND_URL}/start_multicharacter_chat`, {
                 method: "POST",
                 headers: {

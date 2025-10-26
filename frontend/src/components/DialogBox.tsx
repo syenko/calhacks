@@ -5,6 +5,7 @@ interface DialogBoxProps {
     dialog: string;
     width?: number; // width in pixels
     height?: number; // height in pixels
+    maxHeight?: number; // max height in pixels (will scroll if exceeded)
     className?: string;
     streamSpeed?: number; // characters per frame (default 1)
     onStreamingChange?: (isStreaming: boolean) => void; // callback when streaming state changes
@@ -14,14 +15,17 @@ export default function DialogBox({
     dialog,
     width = 400,
     height = 160,
+    maxHeight = 300,
     className = "",
     streamSpeed = 1,
     onStreamingChange,
 }: DialogBoxProps) {
     const [displayedText, setDisplayedText] = useState("");
     const [actualHeight, setActualHeight] = useState(height);
+    const [showTopGradient, setShowTopGradient] = useState(false);
     const currentIndexRef = useRef(0);
     const containerRef = useRef<HTMLDivElement>(null);
+    const textContentRef = useRef<HTMLDivElement>(null);
 
     // Calculate viewBox to maintain square pixels
     const viewBoxWidth = width;
@@ -59,30 +63,58 @@ export default function DialogBox({
         };
     }, [dialog, streamSpeed, onStreamingChange]);
 
-    // Measure actual content height
+    // Measure actual content height (capped at maxHeight)
     useEffect(() => {
-        if (containerRef.current) {
+        if (textContentRef.current) {
             const observer = new ResizeObserver((entries) => {
                 for (const entry of entries) {
-                    const contentHeight = entry.contentRect.height;
-                    setActualHeight(Math.max(height, contentHeight));
+                    // Get the scroll height to account for overflow content
+                    const contentHeight =
+                        textContentRef.current?.scrollHeight || height;
+                    setActualHeight(
+                        Math.min(Math.max(height, contentHeight), maxHeight)
+                    );
                 }
             });
 
-            observer.observe(containerRef.current);
+            observer.observe(textContentRef.current);
             return () => observer.disconnect();
         }
-    }, [height]);
+    }, [height, maxHeight]);
+
+    // Auto-scroll to bottom when text updates (especially during streaming)
+    useEffect(() => {
+        if (textContentRef.current) {
+            textContentRef.current.scrollTop =
+                textContentRef.current.scrollHeight;
+            // After auto-scrolling, check if we should show gradient
+            // (will be false since we just scrolled to bottom)
+            const scrollTop = textContentRef.current.scrollTop;
+            setShowTopGradient(scrollTop > 10);
+        }
+    }, [displayedText]);
+
+    // Handle scroll to show/hide top gradient
+    const handleScroll = () => {
+        if (textContentRef.current) {
+            const scrollTop = textContentRef.current.scrollTop;
+            setShowTopGradient(scrollTop > 10);
+        }
+    };
 
     return (
         <div
             ref={containerRef}
             className={`relative text-wrap ${className}`}
-            style={{ width: `${width}px`, minHeight: `${height}px` }}
+            style={{
+                width: `${width}px`,
+                height: `${actualHeight}px`,
+                maxHeight: `${maxHeight}px`,
+            }}
         >
             {/* SVG Pixel Art Border Background */}
             <svg
-                className="absolute inset-0 w-full h-full"
+                className="absolute inset-0 w-full h-full pointer-events-none"
                 viewBox={`0 0 ${viewBoxWidth} ${viewBoxHeight}`}
                 preserveAspectRatio="xMidYMid meet"
                 xmlns="http://www.w3.org/2000/svg"
@@ -200,11 +232,45 @@ export default function DialogBox({
             </svg>
 
             {/* Dialog text content */}
-            <div className="relative z-10 p-8">
+            <div
+                ref={textContentRef}
+                className="relative z-10 p-8 overflow-y-auto h-full pixel-scrollbar"
+                style={{ maxHeight: `${maxHeight}px` }}
+                onScroll={handleScroll}
+            >
                 <p className="text-black text-xl leading-relaxed">
                     {displayedText}
                 </p>
             </div>
+
+            {/* Top gradient overlay when scrolled */}
+            {showTopGradient && (
+                <div
+                    className="absolute pointer-events-none z-20 transition-opacity duration-200"
+                    style={{
+                        top: `${PIXEL_SIZE}px`,
+                        left: `${PIXEL_SIZE}px`,
+                        right: `${PIXEL_SIZE}px`,
+                        height: "48px",
+                        background:
+                            "linear-gradient(to bottom, rgba(255,255,255,0.95) 0%, rgba(255,255,255,0.8) 50%, rgba(255,255,255,0) 100%)",
+                    }}
+                />
+            )}
+
+            {/* Hidden scrollbar styles */}
+            <style jsx>{`
+                /* Hide scrollbar for Chrome, Safari and Opera */
+                .pixel-scrollbar::-webkit-scrollbar {
+                    display: none;
+                }
+
+                /* Hide scrollbar for IE, Edge and Firefox */
+                .pixel-scrollbar {
+                    -ms-overflow-style: none; /* IE and Edge */
+                    scrollbar-width: none; /* Firefox */
+                }
+            `}</style>
         </div>
     );
 }

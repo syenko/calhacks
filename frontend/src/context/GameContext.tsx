@@ -46,7 +46,7 @@ export const GameProvider = ({ children }: { children: React.ReactNode }) => {
     );
     const [groupDates, setGroupDates] = useState<CharacterId[][]>([]);
     const [maxTurns, setMaxTurns] = useState<number>(MAX_INDIVIDUAL_TURNS);
-    const [maxSelected, setMaxSelected] = useState<number>(2);
+    const [maxSelected, setMaxSelected] = useState<number>(1);
     const [individualTurns, setIndividualTurns] = useState<
         Map<CharacterId, number>
     >(
