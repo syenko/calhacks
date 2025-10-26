@@ -44,7 +44,8 @@ def get_chat_completion(messages):
     return _parse_event_stream(raw)
 
 
-if __name__ == "__main__":
-    demo_messages = [{"role": "system", "content": "Ja! Germany vas the best country in the world back in the olden days, like 1940s!"},
-                     {"role": "user", "content": "Whats your opinion on germany? answer in a german accent."}]
-    print(get_chat_completion(demo_messages))
+# if __name__ == "__main__":
+#     demo_messages = [{"role": "system", "content": "Ja! Germany vas the best country in the world back in the olden days, like 1940s!"},
+#                      {"role": "user", "content": "Whats your opinion on germany? answer in a german accent."}]
+
+#     print(get_chat_completion(demo_messages))
