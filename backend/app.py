@@ -35,6 +35,11 @@ def _load_characters() -> Tuple[Character, Dict[str, Character], Dict[Tuple[str,
 
 
 USER, CHARACTERS, RELATIONSHIPS = _load_characters()
+MESSAGE_HISTORY: Dict[str, List[dict]] = {character.name: [
+        {"role": "system", "content": ""},
+        {"role": "user", "content": character_one.context}
+    ] for character in CHARACTERS.values()
+}
 
 
 @app.post("/do_multicharacter_chat")
@@ -74,7 +79,6 @@ def do_multicharacter_chat(character_one_name: str, character_two_name: str, use
 
 
 def _build_messages(speaker: Character, listener: Character) -> List[dict]:
-    # system_prompt = f"You are {speaker.name} and you are talking to {USER.name} and {listener.name}."
     messages: List[dict] = [
         {"role": "system", "content": system_prompt},
         {"role": "user", "content": speaker.context},
@@ -82,8 +86,6 @@ def _build_messages(speaker: Character, listener: Character) -> List[dict]:
 
     relationship = RELATIONSHIPS.get((speaker.name, listener.name))
     if relationship:
-        # if relationship.context:
-        #     messages.append({"role": "user", "content": relationship.context})
         if relationship.reveals:
             reveals_text = "\n".join(relationship.reveals)
             messages.append({"role": "user", "content": reveals_text})
@@ -119,38 +121,36 @@ def start_multicharacter_chat():
     system_prompt_one = f"You are {character_one_name} and you are talking to {USER.name} and {character_two_name}."
     system_prompt_two = f"You are {character_two_name} and you are talking to {USER.name} and {character_one_name}."
 
-    messages_one = [
-        {"role": "system", "content": system_prompt_one},
-        {"role": "user", "content": character_one.context},
-    ]
-    messages_two = [
-        {"role": "system", "content": system_prompt_two},
-        {"role": "user", "content": character_two.context},
-    ]
+    MESSAGE_HISTORY[character_one_name][0] = {"role": "system", "content": system_prompt_one}
+    MESSAGE_HISTORY[character_two_name][0] = {"role": "system", "content": system_prompt_two}
+
+    # NOTE: i removed this to keep MESSAGE_HISTORY as single source of truth
+    # messages_one = MESSAGE_HISTORY[character_one_name]
+    # messages_two = MESSAGE_HISTORY[character_two_name]
 
     if (character_one, character_two) in RELATIONSHIPS:
-        messages_one.append({"role": "user", "content": RELATIONSHIPS[(character_one_name, character_two_name)]})
+        MESSAGE_HISTORY[character_one_name].append({"role": "user", "content": RELATIONSHIPS[(character_one_name, character_two_name)]})
     if (character_two, character_one) in RELATIONSHIPS:
-        messages_two.append({"role": "user", "content": RELATIONSHIPS[(character_two_name, character_one_name)]})
+        MESSAGE_HISTORY[character_two_name].append({"role": "user", "content": RELATIONSHIPS[(character_two_name, character_one_name)]})
 
 
     user_line = {"role": "user", "content": f"{USER.name}: {user_input}"}
-    messages_one.append(user_line)
-    messages_two.append(deepcopy(user_line))
+    MESSAGE_HISTORY[character_one_name].append(user_line)
+    MESSAGE_HISTORY[character_two_name].append(deepcopy(user_line))
 
     speaker_order = [
-        (character_one, messages_one, messages_two),
-        (character_two, messages_two, messages_one),
+        (character_one_name, character_two_name),
+        (character_two_name, character_one_name),
     ]
     random.shuffle(speaker_order)
 
     responses: List[dict] = []
-    for speaker, speaker_messages, listener_messages in speaker_order:
-        response_text = get_chat_completion(speaker_messages)
-        responses.append({"character": speaker.name, "content": response_text})
+    for speaker_name, listener_name in speaker_order:
+        response_text = get_chat_completion(MESSAGE_HISTORY[ch1_name])
+        responses.append({"character": speaker_name, "content": response_text})
 
-        speaker_messages.append({"role": "assistant", "content": response_text})
-        listener_messages.append({"role": "user", "content": f"{speaker.name}: {response_text}"})
+        MESSAGE_HISTORY[speaker_name].append({"role": "assistant", "content": response_text})
+        MESSAGE_HISTORY[listener_name].append({"role": "user", "content": f"{speaker_name}: {response_text}"})
 
     return jsonify({
         "responses": responses,
@@ -173,6 +173,7 @@ def start_chat():
         return jsonify({"error": f"Unknown character: {character_name}"}), 404
 
     character = CHARACTERS[character_name]
+    # TODO change
     messages = _build_messages(character, USER)
     messages.append({"role": "user", "content": f"{USER.name}: {user_input}"})
 
