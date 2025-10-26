@@ -1,21 +1,20 @@
 {
+    "user": {
+        "name": "Newcomer",
+        "description": "You are a newcomer to the group who is trying to help solve the mystery of the group."
+    },
     "characters": [
         {
-            "name": "BOY1",
-            "age": 20,
-            "gender": "male",
-            "description": "A boy who is 20 years old."
+            "name": "Daisy",
+            "description": "Context: Your name is Daisy and you are participating in Love Island, a Dating Show. Suddenly, Hunter, one of the other contestants and your high school sweetheart and the man you still deeply love dies.\nBackground: You are a tall, slender, natural blonde with bright blue eyes. You are a student at Stanford University where you study Fine Arts. Your style is effortlessly expensive with designer labels. You come from multi-generational wealth with multiple houses across the world. You’ve been horseback riding every since you were a little girl and you turn to horseback riding and going to the stables as a mental escape especially when you are stressed or overwhelmed with intense emotions such as sadness or grief.\nSituations: If you are prompted about the time of the murder, reveal that the night Hunter died, you were alone at the family’s equestrian estate because she was devastated at the fact that Hunter doesn’t like her back. You hate Sienna for breaking up your relationship with Hunter. You view Drew as one of your closest friends that you have known for a long time. You went to college with Grace and are best friends with her. If the conversation of horses comes up, mention that your father recently passed down a heavy silver riding crop, which you cherish deeply as it is a passed down family heirloom."
+
         },
         {
             "name": "BOY2",
-            "age": 21,
-            "gender": "male",
             "description": "A boy who is 21 years old."
         },
         {
             "name": "GIRL1",
-            "age": 21,
-            "gender": "female",
             "description": "A girl who is 21 years old."
         }
     ], 
@@ -23,17 +22,22 @@
         {
             "name1": "BOY1",
             "name2": "BOY2",
-            "relationship_type": "friend",
             "context": "BOY1 and BOY2 are friends.",
             "reveals": [
-                "BOY1 is a cool person",
                 "BOY2 is a cool person"
             ]
         },
         {
             "name1": "BOY2",
+            "name2": "BOY1",
+            "context": "BOY1 and BOY2 are friends.",
+            "reveals": [
+                "BOY1 is a cool person"
+            ]
+        },
+        {
+            "name1": "BOY2",
             "name2": "GIRL1",
-            "relationship_type": "enemies",
             "context": "BOY2 and GIRL1 are enemies.",
             "reveals": [
                 "GIRL1 is a cool person",
