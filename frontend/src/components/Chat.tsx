@@ -14,6 +14,7 @@ import ProgressBar from "@/components/ProgressBar";
 import { useGame } from "@/context/GameContext";
 import PixelButton from "@/components/PixelButton";
 import { useRouter } from "next/navigation";
+import { BACKEND_URL } from "@/data/constants";
 
 export default function Chat({ onDone = () => {} }: { onDone?: () => void }) {
     const {
@@ -50,6 +51,37 @@ export default function Chat({ onDone = () => {} }: { onDone?: () => void }) {
         // group date
         else if (maxSelected === 2) {
             // TODO: fetch to query group date
+            fetch(`${BACKEND_URL}/do_multicharacter_chat`, {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify({
+                    character_one: selectedCharacters[0],
+                    character_two: selectedCharacters[1],
+                    user_input: userDialog,
+                }),
+            })
+                .then((res) => res.json())
+                .then((data) => {
+                    console.log(data);
+                    setCharacterDialog(data.responses[0].content);
+                    setCurrentCharacter(
+                        data.responses[0].character as CharacterId
+                    );
+                    if (selectedCharacters.length === 1) {
+                        setIndividualTurns(
+                            new Map(individualTurns).set(
+                                currentCharacter,
+                                turns + 1
+                            )
+                        );
+                    }
+                    setTurns(turns + 1);
+                })
+                .catch((err) => {
+                    console.error(err);
+                });
         }
         // fetch("https://my-backend.com/ask", {
         //     // TODO: replace with actual backend URL

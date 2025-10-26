@@ -1,8 +1,8 @@
 export enum CharacterId {
-    Daisy = "daisy",
-    Sienna = "sienna",
-    Grace = "grace",
-    Drew = "drew",
+    Daisy = "Daisy",
+    Sienna = "Sienna",
+    Grace = "Grace",
+    Drew = "Drew",
     // Hunter = "hunter",
 }
 

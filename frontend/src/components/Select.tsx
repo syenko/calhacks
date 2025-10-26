@@ -6,7 +6,11 @@ import CharacterHeadshot from "@/components/CharacterHeadshot";
 import PixelButton from "@/components/PixelButton";
 import { useRouter } from "next/navigation";
 import { useGame } from "@/context/GameContext";
-import { MAX_GROUP_TURNS, MAX_GROUP_DATES } from "@/data/constants";
+import {
+    MAX_GROUP_TURNS,
+    MAX_GROUP_DATES,
+    BACKEND_URL,
+} from "@/data/constants";
 
 export default function Select() {
     const {
@@ -57,8 +61,24 @@ export default function Select() {
     function handleDateSelect() {
         if (maxSelected === 1) {
             // TODO: fetch to start individual chat
+            // fetch(`${BACKEND_URL}/start_chat`, {
+            //     method: "POST",
+            //     body: JSON.stringify({
+            //         character: selectedCharacters[0],
+            //     }),
+            // });
         } else if (maxSelected === 2) {
             // TODO: fetch to start group chat
+            fetch(`${BACKEND_URL}/start_multicharacter_chat`, {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify({
+                    character_one: selectedCharacters[0],
+                    character_two: selectedCharacters[1],
+                }),
+            });
             setGroupDates([...groupDates, selectedCharacters]);
         }
         router.push("/chat");
