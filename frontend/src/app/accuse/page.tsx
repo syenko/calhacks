@@ -1,6 +1,6 @@
 "use client";
 import Background from "@/components/Background";
-import { CharacterId } from "@/data/characters";
+import { CharacterId, mainCharacters } from "@/data/characters";
 import CharacterHeadshot from "@/components/CharacterHeadshot";
 import PixelButton from "@/components/PixelButton";
 import { useState } from "react";
@@ -39,7 +39,7 @@ export default function AccusePage() {
                     Accuse the killer?
                 </div>
                 <div className="flex flex-row">
-                    {Object.values(CharacterId).map((character) => (
+                    {mainCharacters.map((character) => (
                         <CharacterHeadshot
                             onSelect={(selected) =>
                                 handleSelect(character, selected)

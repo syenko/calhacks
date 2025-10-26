@@ -42,7 +42,7 @@ export default function Select() {
 
     function showStage2Button() {
         if (maxSelected === 1) {
-            for (const character of Object.values(CharacterId)) {
+            for (const character of mainCharacters) {
                 if ((individualTurns.get(character) ?? 0) == 1) {
                     return false;
                 }
