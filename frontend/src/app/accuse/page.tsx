@@ -5,10 +5,15 @@ import CharacterHeadshot from "@/components/CharacterHeadshot";
 import PixelButton from "@/components/PixelButton";
 import { useState } from "react";
 import PageWithNotes from "@/components/PageWithNotes";
+import { useGame } from "@/context/GameContext";
+import { useRouter } from "next/navigation";
 
 export default function AccusePage() {
     const [selectedCharacter, setSelectedCharacter] =
         useState<CharacterId | null>(null);
+    const { killer } = useGame();
+
+    const router = useRouter();
 
     const handleSelect = (character: CharacterId, selected: boolean) => {
         if (selected) {
@@ -19,7 +24,10 @@ export default function AccusePage() {
     };
 
     const handleAccuse = () => {
-        if (selectedCharacter) {
+        if (selectedCharacter == killer) {
+            router.push("/win");
+        } else {
+            router.push("/lose");
         }
     };
 

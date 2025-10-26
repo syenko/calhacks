@@ -16,6 +16,7 @@ interface GameContextType {
     setGroupDates: (groupDates: CharacterId[][]) => void;
     notes: string;
     setNotes: (notes: string) => void;
+    killer: CharacterId;
 }
 
 export const GameContext = createContext<GameContextType>({
@@ -36,6 +37,7 @@ export const GameContext = createContext<GameContextType>({
     setGroupDates: () => {},
     notes: "",
     setNotes: () => {},
+    killer: CharacterId.Daisy,
 });
 
 export const GameProvider = ({ children }: { children: React.ReactNode }) => {
@@ -56,6 +58,8 @@ export const GameProvider = ({ children }: { children: React.ReactNode }) => {
         ])
     );
     const [notes, setNotes] = useState<string>("");
+    const killer = CharacterId.Daisy;
+
     return (
         <GameContext.Provider
             value={{
@@ -71,6 +75,7 @@ export const GameProvider = ({ children }: { children: React.ReactNode }) => {
                 setGroupDates,
                 notes,
                 setNotes,
+                killer,
             }}
         >
             {children}
