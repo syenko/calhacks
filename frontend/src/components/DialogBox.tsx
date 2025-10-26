@@ -102,6 +102,37 @@ export default function DialogBox({
         }
     };
 
+    // Parse text with asterisks for special formatting
+    const parseFormattedText = (text: string) => {
+        const parts: React.ReactNode[] = [];
+        let currentIndex = 0;
+        const regex = /\*([^*]+)\*/g;
+        let match;
+
+        while ((match = regex.exec(text)) !== null) {
+            // Add text before the asterisked part
+            if (match.index > currentIndex) {
+                parts.push(text.slice(currentIndex, match.index));
+            }
+
+            // Add the asterisked part with special styling
+            parts.push(
+                <span key={match.index} className="text-amber-600 italic">
+                    {match[1]}
+                </span>
+            );
+
+            currentIndex = match.index + match[0].length;
+        }
+
+        // Add remaining text after the last asterisked part
+        if (currentIndex < text.length) {
+            parts.push(text.slice(currentIndex));
+        }
+
+        return parts.length > 0 ? parts : text;
+    };
+
     return (
         <div
             ref={containerRef}
@@ -238,8 +269,8 @@ export default function DialogBox({
                 style={{ maxHeight: `${maxHeight}px` }}
                 onScroll={handleScroll}
             >
-                <p className="text-black text-xl leading-relaxed">
-                    {displayedText}
+                <p className="text-black text-xl leading-relaxed whitespace-pre-wrap">
+                    {parseFormattedText(displayedText)}
                 </p>
             </div>
 
