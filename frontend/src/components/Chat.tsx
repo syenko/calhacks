@@ -13,7 +13,7 @@ import MessageInput from "./MessageInput";
 import ProgressBar from "./ProgressBar";
 
 export default function Chat({
-    characters = [CharacterId.Alice, CharacterId.Bob],
+    characters = [CharacterId.Daisy, CharacterId.Sienna],
     maxTurns = 10,
     onDone = () => {},
 }: {
@@ -26,7 +26,7 @@ export default function Chat({
     );
     const [userDialog, setUserDialog] = useState<string>("");
     const [currentCharacter, setCurrentCharacter] = useState<CharacterId>(
-        CharacterId.Alice
+        CharacterId.Daisy
     );
     const [isTalking, setIsTalking] = useState(false);
     const [turns, setTurns] = useState(0);
@@ -45,7 +45,7 @@ export default function Chat({
         //     .then((res) => res.json())
         //     .then((data) => {
         setCharacterDialog("Yo");
-        setCurrentCharacter(CharacterId.Bob);
+        setCurrentCharacter(CharacterId.Sienna);
         setTurns(turns + 1);
         if (turns >= maxTurns) {
             onDone();
@@ -63,20 +63,26 @@ export default function Chat({
                 <div className="absolute -z-10 left-[400px] bottom-[400px]">
                     {characters.map((character) =>
                         character != currentCharacter ? (
-                            <CharacterHeadshot key={character} id={character} />
+                            <CharacterHeadshot
+                                showName={true}
+                                showHoverEffect={false}
+                                key={character}
+                                id={character}
+                            />
                         ) : null
                     )}
                 </div>
                 <div
-                    className={`absolute -z-10 bottom-[100px] transition-transform ${
+                    className={`absolute -z-10 bottom-[250px] transition-transform ${
                         isTalking ? "" : "" // TODO: add back animation later???
                     }`}
                 >
                     <Image
-                        src={getCharacterImages(currentCharacter).fullbody}
+                        className="w-auto h-[250px]"
+                        src={getCharacterImages(currentCharacter).top}
                         alt={characterMap[currentCharacter].name}
-                        width={200}
-                        height={400}
+                        width={150}
+                        height={250}
                     />
                 </div>
                 <div className="flex flex-col gap-2">
