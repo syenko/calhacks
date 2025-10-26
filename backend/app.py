@@ -110,6 +110,7 @@ def _build_messages(speaker: Character, listener: Character) -> List[dict]:
         {"role": "user", "content": speaker.context},
     ]
 
+
     relationship = RELATIONSHIPS.get((speaker.name, listener.name))
     if relationship:
         reveals_text = "\n".join(relationship)
@@ -154,9 +155,9 @@ def start_multicharacter_chat():
     # messages_one = MESSAGE_HISTORY[character_one_name]
     # messages_two = MESSAGE_HISTORY[character_two_name]
 
-    if (character_one, character_two) in RELATIONSHIPS:
+    if (character_one_name, character_two_name) in RELATIONSHIPS.keys():
         MESSAGE_HISTORY[character_one_name].append({"role": "user", "content": RELATIONSHIPS[(character_one_name, character_two_name)]})
-    if (character_two, character_one) in RELATIONSHIPS:
+    if (character_two_name, character_one_name) in RELATIONSHIPS.keys():
         MESSAGE_HISTORY[character_two_name].append({"role": "user", "content": RELATIONSHIPS[(character_two_name, character_one_name)]})
 
 
