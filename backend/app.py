@@ -72,16 +72,16 @@ def do_multicharacter_chat(character_one_name: str, character_two_name: str, use
     character_one = CHARACTERS[character_one_name]
     character_two = CHARACTERS[character_two_name]
 
-    messages_one = _build_messages(character_one, character_two)
-    messages_two = _build_messages(character_two, character_one)
+    # messages_one = _build_messages(character_one, character_two)
+    # messages_two = _build_messages(character_two, character_one)
 
     user_line = {"role": "user", "content": f"{USER.name}: {user_input}"}
 
     MESSAGE_HISTORY[character_one_name].append(user_line)
     MESSAGE_HISTORY[character_two_name].append(deepcopy(user_line))
 
-    messages_one.append({"role": "user", "content": f"{USER.name}: {user_input}"})
-    messages_two.append({"role": "user", "content": f"{USER.name}: {user_input}"})
+    # messages_one.append({"role": "user", "content": f"{USER.name}: {user_input}"})
+    # messages_two.append({"role": "user", "content": f"{USER.name}: {user_input}"})
 
     speaker_order = [
         (character_one_name, character_two_name),
@@ -192,8 +192,27 @@ def start_multicharacter_chat():
 def start_chat():
     payload = request.get_json(silent=True) or {}
     character_name = payload.get("character")
-    user_input = payload.get("user_input")
     
+    if not character_name:
+        return jsonify({"error": "Missing required field: character"}), 400
+
+    if character_name not in CHARACTERS:
+        return jsonify({"error": f"Unknown character: {character_name}"}), 404
+
+    character = CHARACTERS[character_name]
+    # TODO change
+    MESSAGE_HISTORY[character_name] = _build_messages(character, USER)
+
+    return jsonify({
+        "character": character_name,
+    })
+
+@app.post("/do_chat")
+def do_chat():
+    payload = request.get_json(silent=True) or {}
+    character_name = payload.get("character")
+    user_input = payload.get("user_input")
+
     if not character_name:
         return jsonify({"error": "Missing required field: character"}), 400
     if not user_input:
@@ -203,11 +222,14 @@ def start_chat():
         return jsonify({"error": f"Unknown character: {character_name}"}), 404
 
     character = CHARACTERS[character_name]
-    # TODO change
-    messages = _build_messages(character, USER)
-    messages.append({"role": "user", "content": f"{USER.name}: {user_input}"})
 
-    response_text = get_chat_completion(messages)
+    user_line = {"role": "user", "content": f"{USER.name}: {user_input}"}
+    MESSAGE_HISTORY[character_name].append(user_line)
+
+    response_text = get_chat_completion(MESSAGE_HISTORY[character_name])
+
+    MESSAGE_HISTORY[character_name].append({"role": "assistant", "content": response_text})
+    
     return jsonify({"response": response_text})
 
 
