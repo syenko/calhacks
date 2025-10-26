@@ -39,11 +39,11 @@ def main():
     game = Game(user, characters, relationships)
 
     # daisy + sienna
-    # TODO: optimize relationships passthrough
-    start_multicharacter_chat(characters[0], characters[1], user, relationships_map)
+    # TODO optional: optimize relationships passthrough
+    # start_multicharacter_chat(characters[0], characters[1], user, relationships_map)
 
-    # daisy + drew
-    start_multicharacter_chat(characters[0], characters[3], user, relationships_map)
+    # # daisy + drew
+    # start_multicharacter_chat(characters[0], characters[3], user, relationships_map)
 
     # for character in characters:
     #     start_chat(character, user)
@@ -52,10 +52,11 @@ def main():
 def start_multicharacter_chat(character_one: Character, character_two: Character, user: Character, relmap: dict[tuple[Character, Character], str]):
     # TODO change to query frontend
     user_input = input(f"What do you want to say to {character_one.name} and {character_two.name}?: ") # query front end
-    system = f"You are {character_one.name} and {character_two.name} and you are talking to {user.name}."
-
+    system_one = f"You are {character_one.name} and you are talking to {user.name} and {character_two.name}."
+    system_two = f"You are {character_two.name} and you are talking to {user.name} and {character_one.name}."
+    
     messages_one = [
-        {"role": "system", "content": system},
+        {"role": "system", "content": system_one},
         {"role": "user", "content": character_one.context},
     ]
 
@@ -63,7 +64,7 @@ def start_multicharacter_chat(character_one: Character, character_two: Character
         messages_one.append({"role": "user", "content": relmap[(character_one, character_two)]})
 
     messages_two = [
-        {"role": "system", "content": system},
+        {"role": "system", "content": system_two},
         {"role": "user", "content": character_two.context},
     ]
 

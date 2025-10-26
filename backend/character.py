@@ -1,3 +1,6 @@
+from typing import List
+
+
 class Character:
     def __init__(self, name, context):
         self.name: str = name
