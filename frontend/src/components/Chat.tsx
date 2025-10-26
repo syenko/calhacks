@@ -64,6 +64,9 @@ export default function Chat({
                     {characters.map((character) =>
                         character != currentCharacter ? (
                             <CharacterHeadshot
+                                onSelect={() => {}}
+                                selected={false}
+                                size="small"
                                 showName={true}
                                 showHoverEffect={false}
                                 key={character}

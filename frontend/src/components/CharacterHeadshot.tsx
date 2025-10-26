@@ -12,18 +12,21 @@ export default function CharacterHeadshot({
     size = "small",
     showName = false,
     showHoverEffect = false,
+    onSelect = (selected: boolean) => {},
+    selected = false,
 }: {
     id: CharacterId;
     size?: "small" | "large";
     showName?: boolean;
     showHoverEffect?: boolean;
+    onSelect: (selected: boolean) => void;
+    selected: boolean;
 }) {
     const dimensions = size === "small" ? 96 : 192;
-    const [isSelected, setIsSelected] = useState(false);
 
     const handleClick = () => {
         if (showHoverEffect) {
-            setIsSelected(!isSelected);
+            onSelect(!selected);
         }
     };
 
@@ -32,7 +35,7 @@ export default function CharacterHeadshot({
             <div
                 className={`${size === "small" ? "border-4 " : "border-8 "} ${
                     showHoverEffect
-                        ? isSelected
+                        ? selected
                             ? "border-yellow-600"
                             : "hover:border-yellow-600"
                         : ""
