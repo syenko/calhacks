@@ -12,4 +12,4 @@ class Relationship:
         self.name1 = name1
         self.name2 = name2
         self.context = context
-        self.reveals: List[str] = reveals
+        self.reveals: str = reveals

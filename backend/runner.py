@@ -40,7 +40,7 @@ def main():
 
     # daisy + sienna
     # TODO optional: optimize relationships passthrough
-    # start_multicharacter_chat(characters[0], characters[1], user, relationships_map)
+    start_multicharacter_chat(characters[0], characters[1], user, relationships_map)
 
     # # daisy + drew
     # start_multicharacter_chat(characters[0], characters[3], user, relationships_map)
