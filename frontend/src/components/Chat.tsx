@@ -10,6 +10,7 @@ import Background from "@/components/Background";
 import Image from "next/image";
 import DialogBox from "./DialogBox";
 import MessageInput from "./MessageInput";
+import ProgressBar from "./ProgressBar";
 
 export default function Chat() {
     const [characterDialog, setCharacterDialog] = useState<string>(
@@ -54,19 +55,19 @@ export default function Chat() {
                         ) : null
                     )}
                 </div>
-                <div>
-                    <div
-                        className={`absolute -z-10 bottom-[100px] transition-transform ${
-                            isTalking ? "" : "" // TODO: add back animation later???
-                        }`}
-                    >
-                        <Image
-                            src={getCharacterImages(currentCharacter).fullbody}
-                            alt={characterMap[currentCharacter].name}
-                            width={200}
-                            height={400}
-                        />
-                    </div>
+                <div
+                    className={`absolute -z-10 bottom-[100px] transition-transform ${
+                        isTalking ? "" : "" // TODO: add back animation later???
+                    }`}
+                >
+                    <Image
+                        src={getCharacterImages(currentCharacter).fullbody}
+                        alt={characterMap[currentCharacter].name}
+                        width={200}
+                        height={400}
+                    />
+                </div>
+                <div className="flex flex-col gap-2">
                     <div className="text-2xl font-bold text-white">
                         {characterMap[currentCharacter].name}
                     </div>
@@ -76,14 +77,13 @@ export default function Chat() {
                         height={160}
                         onStreamingChange={setIsTalking}
                     />
-                    <div className="pt-3">
-                        <MessageInput
-                            disabled={userDialog.length === 0}
-                            value={userDialog}
-                            onChange={setUserDialog}
-                            onSend={handleSend}
-                        />
-                    </div>
+                    <MessageInput
+                        disabled={userDialog.length === 0}
+                        value={userDialog}
+                        onChange={setUserDialog}
+                        onSend={handleSend}
+                    />
+                    <ProgressBar progressState={50} width={500} height={40} />
                 </div>
             </div>
         </div>
