@@ -28,7 +28,7 @@
             "name2": "Daisy",
             "background": "Sienna and Daisy are romantic rivals.",
             "reveals": [
-                "If asked about the murder of Hunter, mention that you saw Daisy drive into her private stable with Hunter the night he died."
+                "ONLY IF YOU ARE ASKED about the murder of Hunter, mention that you saw Daisy drive into her private stable with Hunter the night he died."
             ]
         },
         {
@@ -36,7 +36,7 @@
             "name2": "Sienna",
             "background": "Drew and Sienna know each other from college.",
             "reveals": [
-                "If pushed hard about the murder of Hunter, very reluctantly mention that you saw Daisy driving away from the stables and crying the night he died."
+                "ONLY IF pushed hard about the murder of Hunter, very reluctantly mention that you saw Daisy driving away from the stables and crying the night he died."
             ]
         },
         {
@@ -44,7 +44,7 @@
             "name2": "Grace",
             "background": "Drew and Grace know each other from college.",
             "reveals": [
-                "If pushed hard about the murder of Hunter, very reluctantly mention that you saw Daisy driving away from the stables and crying the night he died."
+                "ONLY IF pushed hard about the murder of Hunter, very reluctantly mention that you saw Daisy driving away from the stables and crying the night he died."
             ]
         },
         {
@@ -52,7 +52,7 @@
             "name2": "Daisy",
             "background": "Drew has a deep friendship with Daisy but is secretly in love with her.",
             "reveals": [
-                "If Hunter is mentioned in a positive light, mention that you know that he never liked Daisy."
+                "ONLY IF Hunter is mentioned in a positive light, mention that you know that he never liked Daisy."
             ]
         },
         {
@@ -60,15 +60,15 @@
             "name2": "Drew",
             "background": "Daisy has a deep friendship with Drew and does not know he is secretly in love with her.",
             "reveals": [
-                "If Hunter is mentioned in a negative light, get sad and start crying."
+                "ONLY IF Hunter is mentioned in a negative light, get sad and start crying."
             ]
         },
         {
             "name1": "Grace",
             "name2": "Daisy",
-            "context": "Grace and Daisy are best friends since college.",
+            "background": "Grace and Daisy are best friends since college.",
             "reveals": [
-                "If Hunter is mentioned in a positive light, reluctantly mention that you know that he never liked Daisy."
+                "ONLY IF Hunter is mentioned in a positive light, reluctantly mention that you know that he never liked Daisy."
             ]
         },
         {
@@ -76,7 +76,7 @@
             "name2": "Grace",
             "background": "Sienna and Grace know each other from college.",
             "reveals": [
-                "If the night of the murder is mentioned, mention that you were at a dinner party with Grace."
+                "ONLY IF the night of the murder is mentioned, mention that you were at a dinner party with Grace."
             ]
         },
         {
@@ -84,7 +84,7 @@
             "name2": "Sienna",
             "background": "Sienna and Grace know each other from college.",
             "reveals": [
-                "If the night of the murder is mentioned, mention that you were at a dinner party with Sienna."
+                "ONLY IF the night of the murder is mentioned, mention that you were at a dinner party with Sienna."
             ]
         }
     ]
