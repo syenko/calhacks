@@ -12,7 +12,15 @@ import DialogBox from "./DialogBox";
 import MessageInput from "./MessageInput";
 import ProgressBar from "./ProgressBar";
 
-export default function Chat() {
+export default function Chat({
+    characters = [CharacterId.Alice, CharacterId.Bob],
+    maxTurns = 10,
+    onDone = () => {},
+}: {
+    characters: CharacterId[];
+    maxTurns: number;
+    onDone: () => void;
+}) {
     const [characterDialog, setCharacterDialog] = useState<string>(
         "Hello! ajsd;lfkjasd ;kfj;laksdjf; laskjdfl asdfkj  asdjf;as asd adsfas asdkjf;askdjf;"
     );
@@ -20,25 +28,29 @@ export default function Chat() {
     const [currentCharacter, setCurrentCharacter] = useState<CharacterId>(
         CharacterId.Alice
     );
-    const [characters, setCharacters] = useState<CharacterId[]>([
-        CharacterId.Alice,
-        CharacterId.Bob,
-    ]);
     const [isTalking, setIsTalking] = useState(false);
+    const [turns, setTurns] = useState(0);
 
     const handleSend = () => {
         if (userDialog.length === 0) {
             return;
         }
 
-        fetch("https://my-backend.com/ask", {
-            // TODO: replace with actual backend URL
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ prompt: userDialog }),
-        })
-            .then((res) => res.json())
-            .then((data) => setCharacterDialog(data));
+        // fetch("https://my-backend.com/ask", {
+        //     // TODO: replace with actual backend URL
+        //     method: "POST",
+        //     headers: { "Content-Type": "application/json" },
+        //     body: JSON.stringify({ prompt: userDialog }),
+        // })
+        //     .then((res) => res.json())
+        //     .then((data) => {
+        setCharacterDialog("Yo");
+        setCurrentCharacter(CharacterId.Bob);
+        setTurns(turns + 1);
+        if (turns >= maxTurns) {
+            onDone();
+        }
+        // });
 
         setUserDialog("");
     };
@@ -83,7 +95,11 @@ export default function Chat() {
                         onChange={setUserDialog}
                         onSend={handleSend}
                     />
-                    <ProgressBar progressState={50} width={500} height={40} />
+                    <ProgressBar
+                        progressState={(turns / maxTurns) * 100}
+                        width={500}
+                        height={40}
+                    />
                 </div>
             </div>
         </div>
