@@ -11,11 +11,11 @@ class Game:
         system = f"You are {other_character.name} and you are talking to {self.user.name}."
         messages = [
             {"role": "system", "content": system},
-            {"role": "user", "content": self.user.context},
             {"role": "user", "content": other_character.context},
             {"role": "user", "content": f"{self.user.name}: {user_input}"}
         ]
-        response = get_chat_completion(messages)
+        while response:
+            response = get_chat_completion(messages)
 
         return response
 
