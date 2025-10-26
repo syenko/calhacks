@@ -17,7 +17,7 @@ export default function Home() {
                 </div>
                 <div className="text-4xl py-10">To Die For...</div>
                 <PixelButton
-                    onClick={() => router.push("/select")}
+                    onClick={() => router.push("/intro")}
                     disabled={false}
                     height={60}
                     width={200}

@@ -3,8 +3,16 @@ export enum CharacterId {
     Sienna = "Sienna",
     Grace = "Grace",
     Drew = "Drew",
-    // Hunter = "hunter",
+    Host = "Host",
+    Hunter = "hunter",
 }
+
+export const mainCharacters = [
+    CharacterId.Grace,
+    CharacterId.Drew,
+    CharacterId.Daisy,
+    CharacterId.Sienna,
+];
 
 export type Character = {
     name: string;
@@ -12,11 +20,12 @@ export type Character = {
 };
 
 export const characterMap: Record<CharacterId, Character> = {
-    [CharacterId.Daisy]: { name: "Daisy", folder: "daisy" },
-    [CharacterId.Sienna]: { name: "Sienna", folder: "sienna" },
     [CharacterId.Grace]: { name: "Grace", folder: "grace" },
     [CharacterId.Drew]: { name: "Drew", folder: "drew" },
-    // [CharacterId.Hunter]: { name: "Hunter", folder: "hunter" },
+    [CharacterId.Daisy]: { name: "Daisy", folder: "daisy" },
+    [CharacterId.Sienna]: { name: "Sienna", folder: "sienna" },
+    [CharacterId.Host]: { name: "Andy (Host)", folder: "host" },
+    [CharacterId.Hunter]: { name: "Hunter", folder: "hunter" },
 };
 
 export function getCharacterImages(id: CharacterId) {

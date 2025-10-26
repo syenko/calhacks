@@ -1,6 +1,5 @@
 "use client";
-import { useState } from "react";
-import { CharacterId } from "@/data/characters";
+import { CharacterId, mainCharacters } from "@/data/characters";
 import Background from "@/components/Background";
 import CharacterHeadshot from "@/components/CharacterHeadshot";
 import PixelButton from "@/components/PixelButton";
@@ -107,7 +106,7 @@ export default function Select() {
                     : `Pick two people for a group date (${groupDates.length}/${MAX_GROUP_DATES} dates)`}
             </div>
             <div className="flex flex-row">
-                {Object.values(CharacterId).map((character) => (
+                {mainCharacters.map((character) => (
                     <CharacterHeadshot
                         onSelect={(selected) =>
                             handleSelect(character, selected)
