@@ -32,8 +32,8 @@ export default function Chat({ onDone = () => {} }: { onDone?: () => void }) {
     const [isTalking, setIsTalking] = useState(false);
     const [turns, setTurns] = useState(
         selectedCharacters.length === 1
-            ? individualTurns.get(currentCharacter) ?? 0
-            : 0
+            ? individualTurns.get(currentCharacter) ?? 1
+            : 1
     );
     const router = useRouter();
 
@@ -128,11 +128,13 @@ export default function Chat({ onDone = () => {} }: { onDone?: () => void }) {
                     />
                     <PixelButton
                         onClick={handleBack}
-                        width={100}
+                        width={selectedCharacters.length === 1 ? 100 : 300}
                         height={40}
                         color="red"
                     >
-                        Go Back
+                        {selectedCharacters.length === 1
+                            ? "Go Back"
+                            : "End Date (cannot be undone)"}
                     </PixelButton>
                 </div>
             </div>
