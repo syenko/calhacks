@@ -3,15 +3,15 @@ import { useState } from "react";
 import { CharacterId } from "@/data/characters";
 import Background from "@/components/Background";
 import CharacterHeadshot from "@/components/CharacterHeadshot";
-import Link from "next/link";
 import PixelButton from "@/components/PixelButton";
 import { useRouter } from "next/navigation";
+import { useGame } from "@/context/GameContext";
 
-export default function Select({ maxSelected = 2 }: { maxSelected: number }) {
-    const [selectedCharacters, setSelectedCharacters] = useState<CharacterId[]>(
-        []
-    );
+export default function Select() {
+    const { selectedCharacters, setSelectedCharacters, maxSelected } =
+        useGame();
     const router = useRouter();
+
     const handleSelect = (character: CharacterId, selected: boolean) => {
         if (maxSelected === 1) {
             setSelectedCharacters([character]);

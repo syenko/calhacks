@@ -1,5 +1,5 @@
 "use client";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import {
     CharacterId,
     characterMap,
@@ -11,22 +11,16 @@ import Image from "next/image";
 import DialogBox from "./DialogBox";
 import MessageInput from "./MessageInput";
 import ProgressBar from "./ProgressBar";
+import { useGame } from "@/context/GameContext";
 
-export default function Chat({
-    characters = [CharacterId.Daisy, CharacterId.Sienna],
-    maxTurns = 10,
-    onDone = () => {},
-}: {
-    characters: CharacterId[];
-    maxTurns: number;
-    onDone: () => void;
-}) {
+export default function Chat({ onDone = () => {} }: { onDone?: () => void }) {
+    const { selectedCharacters, maxTurns } = useGame();
     const [characterDialog, setCharacterDialog] = useState<string>(
         "Hello! ajsd;lfkjasd ;kfj;laksdjf; laskjdfl asdfkj  asdjf;as asd adsfas asdkjf;askdjf;"
     );
     const [userDialog, setUserDialog] = useState<string>("");
     const [currentCharacter, setCurrentCharacter] = useState<CharacterId>(
-        CharacterId.Daisy
+        selectedCharacters[0] ?? CharacterId.Daisy
     );
     const [isTalking, setIsTalking] = useState(false);
     const [turns, setTurns] = useState(0);
@@ -58,10 +52,10 @@ export default function Chat({
     return (
         <div className="">
             <Background src="/backgrounds/island.png" opacity={100} />
-            <div className="flex flex-col gap-2 relative pt-[200px]">
+            <div className="flex flex-row gap-2 relative pt-[200px]">
                 {/* Other characters that aren't the current character  */}
-                <div className="absolute -z-10 left-[400px] bottom-[400px]">
-                    {characters.map((character) =>
+                <div className="absolute -z-10 left-[400px] bottom-[400px] flex flex-row">
+                    {selectedCharacters.map((character) =>
                         character != currentCharacter ? (
                             <CharacterHeadshot
                                 onSelect={() => {}}
@@ -89,7 +83,7 @@ export default function Chat({
                     />
                 </div>
                 <div className="flex flex-col gap-2">
-                    <div className="text-2xl font-bold text-white">
+                    <div className="text-2xl font-bold text-white pl-[150px]">
                         {characterMap[currentCharacter].name}
                     </div>
                     <DialogBox
