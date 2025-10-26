@@ -1,4 +1,5 @@
 import { useState, useEffect, useRef } from "react";
+import { PIXEL_SIZE } from "@/data/constants";
 
 interface DialogBoxProps {
     dialog: string;
@@ -6,6 +7,7 @@ interface DialogBoxProps {
     height?: number; // height in pixels
     className?: string;
     streamSpeed?: number; // characters per frame (default 1)
+    onStreamingChange?: (isStreaming: boolean) => void; // callback when streaming state changes
 }
 
 export default function DialogBox({
@@ -14,6 +16,7 @@ export default function DialogBox({
     height = 160,
     className = "",
     streamSpeed = 1,
+    onStreamingChange,
 }: DialogBoxProps) {
     const [displayedText, setDisplayedText] = useState("");
     const [actualHeight, setActualHeight] = useState(height);
@@ -21,7 +24,6 @@ export default function DialogBox({
     const containerRef = useRef<HTMLDivElement>(null);
 
     // Calculate viewBox to maintain square pixels
-    const pixelSize = 6; // base pixel size
     const viewBoxWidth = width;
     const viewBoxHeight = actualHeight;
 
@@ -31,8 +33,12 @@ export default function DialogBox({
         setDisplayedText("");
 
         if (!dialog) {
+            onStreamingChange?.(false);
             return;
         }
+
+        // Start streaming
+        onStreamingChange?.(true);
 
         // Stream text in
         const interval = setInterval(() => {
@@ -40,14 +46,18 @@ export default function DialogBox({
 
             if (currentIndexRef.current >= dialog.length) {
                 setDisplayedText(dialog);
+                onStreamingChange?.(false); // Stop streaming
                 clearInterval(interval);
             } else {
                 setDisplayedText(dialog.slice(0, currentIndexRef.current));
             }
         }, 30); // ~33fps
 
-        return () => clearInterval(interval);
-    }, [dialog, streamSpeed]);
+        return () => {
+            clearInterval(interval);
+            onStreamingChange?.(false);
+        };
+    }, [dialog, streamSpeed, onStreamingChange]);
 
     // Measure actual content height
     useEffect(() => {
@@ -88,103 +98,103 @@ export default function DialogBox({
 
                 {/* Inner white background */}
                 <rect
-                    x={pixelSize}
-                    y={pixelSize}
-                    width={viewBoxWidth - pixelSize * 2}
-                    height={viewBoxHeight - pixelSize * 2}
+                    x={PIXEL_SIZE}
+                    y={PIXEL_SIZE}
+                    width={viewBoxWidth - PIXEL_SIZE * 2}
+                    height={viewBoxHeight - PIXEL_SIZE * 2}
                     fill="white"
                 />
 
                 {/* Corner decorations - pixel art style */}
                 {/* Top left corner */}
                 <rect
-                    x={pixelSize + 4}
-                    y={pixelSize + 4}
-                    width={pixelSize}
-                    height={pixelSize}
+                    x={PIXEL_SIZE + 4}
+                    y={PIXEL_SIZE + 4}
+                    width={PIXEL_SIZE}
+                    height={PIXEL_SIZE}
                     fill="#fbbf24"
                 />
                 <rect
-                    x={pixelSize + 4 + pixelSize}
-                    y={pixelSize + 4}
-                    width={pixelSize}
-                    height={pixelSize}
+                    x={PIXEL_SIZE + 4 + PIXEL_SIZE}
+                    y={PIXEL_SIZE + 4}
+                    width={PIXEL_SIZE}
+                    height={PIXEL_SIZE}
                     fill="#f59e0b"
                 />
                 <rect
-                    x={pixelSize + 4}
-                    y={pixelSize + 4 + pixelSize}
-                    width={pixelSize}
-                    height={pixelSize}
+                    x={PIXEL_SIZE + 4}
+                    y={PIXEL_SIZE + 4 + PIXEL_SIZE}
+                    width={PIXEL_SIZE}
+                    height={PIXEL_SIZE}
                     fill="#f59e0b"
                 />
 
                 {/* Top right corner */}
                 <rect
-                    x={viewBoxWidth - pixelSize * 2 - 4}
-                    y={pixelSize + 4}
-                    width={pixelSize}
-                    height={pixelSize}
+                    x={viewBoxWidth - PIXEL_SIZE * 2 - 4}
+                    y={PIXEL_SIZE + 4}
+                    width={PIXEL_SIZE}
+                    height={PIXEL_SIZE}
                     fill="#fbbf24"
                 />
                 <rect
-                    x={viewBoxWidth - pixelSize * 3 - 4}
-                    y={pixelSize + 4}
-                    width={pixelSize}
-                    height={pixelSize}
+                    x={viewBoxWidth - PIXEL_SIZE * 3 - 4}
+                    y={PIXEL_SIZE + 4}
+                    width={PIXEL_SIZE}
+                    height={PIXEL_SIZE}
                     fill="#f59e0b"
                 />
                 <rect
-                    x={viewBoxWidth - pixelSize * 2 - 4}
-                    y={pixelSize + 4 + pixelSize}
-                    width={pixelSize}
-                    height={pixelSize}
+                    x={viewBoxWidth - PIXEL_SIZE * 2 - 4}
+                    y={PIXEL_SIZE + 4 + PIXEL_SIZE}
+                    width={PIXEL_SIZE}
+                    height={PIXEL_SIZE}
                     fill="#f59e0b"
                 />
 
                 {/* Bottom left corner */}
                 <rect
-                    x={pixelSize + 4}
-                    y={viewBoxHeight - pixelSize * 2 - 4}
-                    width={pixelSize}
-                    height={pixelSize}
+                    x={PIXEL_SIZE + 4}
+                    y={viewBoxHeight - PIXEL_SIZE * 2 - 4}
+                    width={PIXEL_SIZE}
+                    height={PIXEL_SIZE}
                     fill="#fbbf24"
                 />
                 <rect
-                    x={pixelSize + 4 + pixelSize}
-                    y={viewBoxHeight - pixelSize * 2 - 4}
-                    width={pixelSize}
-                    height={pixelSize}
+                    x={PIXEL_SIZE + 4 + PIXEL_SIZE}
+                    y={viewBoxHeight - PIXEL_SIZE * 2 - 4}
+                    width={PIXEL_SIZE}
+                    height={PIXEL_SIZE}
                     fill="#f59e0b"
                 />
                 <rect
-                    x={pixelSize + 4}
-                    y={viewBoxHeight - pixelSize * 3 - 4}
-                    width={pixelSize}
-                    height={pixelSize}
+                    x={PIXEL_SIZE + 4}
+                    y={viewBoxHeight - PIXEL_SIZE * 3 - 4}
+                    width={PIXEL_SIZE}
+                    height={PIXEL_SIZE}
                     fill="#f59e0b"
                 />
 
                 {/* Bottom right corner */}
                 <rect
-                    x={viewBoxWidth - pixelSize * 2 - 4}
-                    y={viewBoxHeight - pixelSize * 2 - 4}
-                    width={pixelSize}
-                    height={pixelSize}
+                    x={viewBoxWidth - PIXEL_SIZE * 2 - 4}
+                    y={viewBoxHeight - PIXEL_SIZE * 2 - 4}
+                    width={PIXEL_SIZE}
+                    height={PIXEL_SIZE}
                     fill="#fbbf24"
                 />
                 <rect
-                    x={viewBoxWidth - pixelSize * 3 - 4}
-                    y={viewBoxHeight - pixelSize * 2 - 4}
-                    width={pixelSize}
-                    height={pixelSize}
+                    x={viewBoxWidth - PIXEL_SIZE * 3 - 4}
+                    y={viewBoxHeight - PIXEL_SIZE * 2 - 4}
+                    width={PIXEL_SIZE}
+                    height={PIXEL_SIZE}
                     fill="#f59e0b"
                 />
                 <rect
-                    x={viewBoxWidth - pixelSize * 2 - 4}
-                    y={viewBoxHeight - pixelSize * 3 - 4}
-                    width={pixelSize}
-                    height={pixelSize}
+                    x={viewBoxWidth - PIXEL_SIZE * 2 - 4}
+                    y={viewBoxHeight - PIXEL_SIZE * 3 - 4}
+                    width={PIXEL_SIZE}
+                    height={PIXEL_SIZE}
                     fill="#f59e0b"
                 />
             </svg>

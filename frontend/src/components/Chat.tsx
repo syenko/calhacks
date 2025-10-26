@@ -13,7 +13,7 @@ import MessageInput from "./MessageInput";
 
 export default function Chat() {
     const [characterDialog, setCharacterDialog] = useState<string>(
-        "Hello! ajsd;lfkjasd ;kfj;laksdjf; laskjdfl;"
+        "Hello! ajsd;lfkjasd ;kfj;laksdjf; laskjdfl asdfkj  asdjf;as asd adsfas asdkjf;askdjf;"
     );
     const [userDialog, setUserDialog] = useState<string>("");
     const [currentCharacter, setCurrentCharacter] = useState<CharacterId>(
@@ -23,6 +23,7 @@ export default function Chat() {
         CharacterId.Alice,
         CharacterId.Bob,
     ]);
+    const [isTalking, setIsTalking] = useState(false);
 
     const handleSend = () => {
         if (userDialog.length === 0) {
@@ -44,9 +45,9 @@ export default function Chat() {
     return (
         <div className="">
             <Background src="/backgrounds/island.png" opacity={100} />
-            <div className="flex flex-col gap-2 relative">
+            <div className="flex flex-col gap-2 relative pt-[200px]">
                 {/* Other characters that aren't the current character  */}
-                <div className="absolute -z-10 left-[400px] top-[200px]">
+                <div className="absolute -z-10 left-[400px] bottom-[400px]">
                     {characters.map((character) =>
                         character != currentCharacter ? (
                             <CharacterHeadshot key={character} id={character} />
@@ -54,7 +55,11 @@ export default function Chat() {
                     )}
                 </div>
                 <div>
-                    <div className="relative -z-10 top-[200px]">
+                    <div
+                        className={`absolute -z-10 bottom-[100px] transition-transform ${
+                            isTalking ? "" : "" // TODO: add back animation later???
+                        }`}
+                    >
                         <Image
                             src={getCharacterImages(currentCharacter).fullbody}
                             alt={characterMap[currentCharacter].name}
@@ -69,6 +74,7 @@ export default function Chat() {
                         dialog={characterDialog}
                         width={500}
                         height={160}
+                        onStreamingChange={setIsTalking}
                     />
                     <div className="pt-3">
                         <MessageInput

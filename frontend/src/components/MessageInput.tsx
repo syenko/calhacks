@@ -1,3 +1,5 @@
+import { PIXEL_SIZE } from "@/data/constants";
+
 interface MessageInputProps {
     value: string;
     onChange: (value: string) => void;
@@ -17,7 +19,6 @@ export default function MessageInput({
     className = "",
     disabled = false,
 }: MessageInputProps) {
-    const pixelSize = 6;
     const height = 80;
     const buttonWidth = 100;
 
@@ -55,75 +56,75 @@ export default function MessageInput({
 
                     {/* Inner white background */}
                     <rect
-                        x={pixelSize}
-                        y={pixelSize}
-                        width={width - buttonWidth - 16 - pixelSize * 2}
-                        height={height - pixelSize * 2}
+                        x={PIXEL_SIZE}
+                        y={PIXEL_SIZE}
+                        width={width - buttonWidth - 16 - PIXEL_SIZE * 2}
+                        height={height - PIXEL_SIZE * 2}
                         fill="white"
                     />
 
                     {/* Corner decorations */}
                     {/* Top left */}
                     <rect
-                        x={pixelSize + 4}
-                        y={pixelSize + 4}
-                        width={pixelSize}
-                        height={pixelSize}
+                        x={PIXEL_SIZE + 4}
+                        y={PIXEL_SIZE + 4}
+                        width={PIXEL_SIZE}
+                        height={PIXEL_SIZE}
                         fill="#60a5fa"
                     />
                     <rect
-                        x={pixelSize + 4 + pixelSize}
-                        y={pixelSize + 4}
-                        width={pixelSize}
-                        height={pixelSize}
+                        x={PIXEL_SIZE + 4 + PIXEL_SIZE}
+                        y={PIXEL_SIZE + 4}
+                        width={PIXEL_SIZE}
+                        height={PIXEL_SIZE}
                         fill="#3b82f6"
                     />
 
                     {/* Top right */}
                     <rect
-                        x={width - buttonWidth - 16 - pixelSize * 2 - 4}
-                        y={pixelSize + 4}
-                        width={pixelSize}
-                        height={pixelSize}
+                        x={width - buttonWidth - 16 - PIXEL_SIZE * 2 - 4}
+                        y={PIXEL_SIZE + 4}
+                        width={PIXEL_SIZE}
+                        height={PIXEL_SIZE}
                         fill="#60a5fa"
                     />
                     <rect
-                        x={width - buttonWidth - 16 - pixelSize * 3 - 4}
-                        y={pixelSize + 4}
-                        width={pixelSize}
-                        height={pixelSize}
+                        x={width - buttonWidth - 16 - PIXEL_SIZE * 3 - 4}
+                        y={PIXEL_SIZE + 4}
+                        width={PIXEL_SIZE}
+                        height={PIXEL_SIZE}
                         fill="#3b82f6"
                     />
 
                     {/* Bottom left */}
                     <rect
-                        x={pixelSize + 4}
-                        y={height - pixelSize * 2 - 4}
-                        width={pixelSize}
-                        height={pixelSize}
+                        x={PIXEL_SIZE + 4}
+                        y={height - PIXEL_SIZE * 2 - 4}
+                        width={PIXEL_SIZE}
+                        height={PIXEL_SIZE}
                         fill="#60a5fa"
                     />
                     <rect
-                        x={pixelSize + 4 + pixelSize}
-                        y={height - pixelSize * 2 - 4}
-                        width={pixelSize}
-                        height={pixelSize}
+                        x={PIXEL_SIZE + 4 + PIXEL_SIZE}
+                        y={height - PIXEL_SIZE * 2 - 4}
+                        width={PIXEL_SIZE}
+                        height={PIXEL_SIZE}
                         fill="#3b82f6"
                     />
 
                     {/* Bottom right */}
                     <rect
-                        x={width - buttonWidth - 16 - pixelSize * 2 - 4}
-                        y={height - pixelSize * 2 - 4}
-                        width={pixelSize}
-                        height={pixelSize}
+                        x={width - buttonWidth - 16 - PIXEL_SIZE * 2 - 4}
+                        y={height - PIXEL_SIZE * 2 - 4}
+                        width={PIXEL_SIZE}
+                        height={PIXEL_SIZE}
                         fill="#60a5fa"
                     />
                     <rect
-                        x={width - buttonWidth - 16 - pixelSize * 3 - 4}
-                        y={height - pixelSize * 2 - 4}
-                        width={pixelSize}
-                        height={pixelSize}
+                        x={width - buttonWidth - 16 - PIXEL_SIZE * 3 - 4}
+                        y={height - PIXEL_SIZE * 2 - 4}
+                        width={PIXEL_SIZE}
+                        height={PIXEL_SIZE}
                         fill="#3b82f6"
                     />
                 </svg>
@@ -164,48 +165,52 @@ export default function MessageInput({
 
                     {/* Button background - muted green or gray when disabled */}
                     <rect
-                        x={pixelSize}
-                        y={pixelSize}
-                        width={buttonWidth - pixelSize * 2}
-                        height={height - pixelSize * 2}
+                        x={PIXEL_SIZE}
+                        y={PIXEL_SIZE}
+                        width={buttonWidth - PIXEL_SIZE * 2}
+                        height={height - PIXEL_SIZE * 2}
                         fill={disabled ? "#6b7280" : "#86a889"}
                     />
 
                     {/* Highlight effect - top left */}
                     <rect
-                        x={pixelSize}
-                        y={pixelSize}
-                        width={buttonWidth - pixelSize * 2}
-                        height={pixelSize}
+                        x={PIXEL_SIZE}
+                        y={PIXEL_SIZE}
+                        width={buttonWidth - PIXEL_SIZE * 2}
+                        height={PIXEL_SIZE}
                         fill={disabled ? "#9ca3af" : "#a8c5ab"}
                     />
                     <rect
-                        x={pixelSize}
-                        y={pixelSize}
-                        width={pixelSize}
-                        height={height - pixelSize * 2}
+                        x={PIXEL_SIZE}
+                        y={PIXEL_SIZE}
+                        width={PIXEL_SIZE}
+                        height={height - PIXEL_SIZE * 2}
                         fill={disabled ? "#9ca3af" : "#a8c5ab"}
                     />
 
                     {/* Shadow effect - bottom right */}
                     <rect
-                        x={pixelSize}
-                        y={height - pixelSize * 2}
-                        width={buttonWidth - pixelSize * 2}
-                        height={pixelSize}
+                        x={PIXEL_SIZE}
+                        y={height - PIXEL_SIZE * 2}
+                        width={buttonWidth - PIXEL_SIZE * 2}
+                        height={PIXEL_SIZE}
                         fill={disabled ? "#4b5563" : "#5c7d5f"}
                     />
                     <rect
-                        x={buttonWidth - pixelSize * 2}
-                        y={pixelSize}
-                        width={pixelSize}
-                        height={height - pixelSize * 2}
+                        x={buttonWidth - PIXEL_SIZE * 2}
+                        y={PIXEL_SIZE}
+                        width={PIXEL_SIZE}
+                        height={height - PIXEL_SIZE * 2}
                         fill={disabled ? "#4b5563" : "#5c7d5f"}
                     />
                 </svg>
 
                 {/* Button text */}
-                <span className={`relative z-10 font-bold text-lg ${disabled ? "text-gray-400" : "text-white"}`}>
+                <span
+                    className={`relative z-10 font-bold text-lg ${
+                        disabled ? "text-gray-400" : "text-white"
+                    }`}
+                >
                     SEND
                 </span>
             </button>
