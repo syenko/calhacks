@@ -16,6 +16,11 @@ import PixelButton from "@/components/PixelButton";
 import { useRouter } from "next/navigation";
 import { BACKEND_URL } from "@/data/constants";
 
+interface ResponseType {
+    id: CharacterId;
+    response: string;
+}
+
 export default function Chat({ onDone = () => {} }: { onDone?: () => void }) {
     const {
         selectedCharacters,
@@ -26,18 +31,30 @@ export default function Chat({ onDone = () => {} }: { onDone?: () => void }) {
         setIndividualTurns,
     } = useGame();
 
-    const [characterDialog, setCharacterDialog] = useState<string>("...");
-    const [userDialog, setUserDialog] = useState<string>("");
     const [currentCharacter, setCurrentCharacter] = useState<CharacterId>(
         selectedCharacters[0] ?? CharacterId.Daisy
     );
+    const [currentDialogIdx, setCurrentDialogIdx] = useState(0);
+    const [characterDialogs, setCharacterDialogs] = useState<ResponseType[]>([
+        { id: currentCharacter, response: "..." },
+    ]);
+    const [userDialog, setUserDialog] = useState<string>("");
+
     const [isTalking, setIsTalking] = useState(false);
     const [turns, setTurns] = useState(
         maxSelected === 1 ? individualTurns.get(currentCharacter) ?? 1 : 1
     );
     const router = useRouter();
 
+    useEffect(() => {
+        setCurrentCharacter(
+            characterDialogs[currentDialogIdx].id ?? CharacterId.Daisy
+        );
+    }, [characterDialogs, currentDialogIdx]);
+
     const handleSend = () => {
+        setCurrentDialogIdx(0);
+
         if (userDialog.length === 0) {
             return;
         }
@@ -58,7 +75,9 @@ export default function Chat({ onDone = () => {} }: { onDone?: () => void }) {
                 .then((res) => res.json())
                 .then((data) => {
                     console.log(data);
-                    setCharacterDialog(data.response);
+                    setCharacterDialogs([
+                        { id: currentCharacter, response: data.response },
+                    ]);
                 })
                 .catch((err) => {
                     console.error(err);
@@ -81,7 +100,17 @@ export default function Chat({ onDone = () => {} }: { onDone?: () => void }) {
                 .then((res) => res.json())
                 .then((data) => {
                     console.log(data);
-                    setCharacterDialog(data.responses[0].content);
+                    setCharacterDialogs(
+                        data.responses.map(
+                            (response: {
+                                character: CharacterId;
+                                content: string;
+                            }) => ({
+                                id: response.character as CharacterId,
+                                response: response.content,
+                            })
+                        )
+                    );
                     setCurrentCharacter(
                         data.responses[0].character as CharacterId
                     );
@@ -91,7 +120,9 @@ export default function Chat({ onDone = () => {} }: { onDone?: () => void }) {
                 });
         }
 
-        setCharacterDialog("Thinking...");
+        setCharacterDialogs([
+            { id: currentCharacter, response: "Thinking..." },
+        ]);
         if (maxSelected === 1) {
             setIndividualTurns(
                 new Map(individualTurns).set(currentCharacter, turns + 1)
@@ -106,17 +137,23 @@ export default function Chat({ onDone = () => {} }: { onDone?: () => void }) {
         setSelectedCharacters([]);
     };
 
+    const handleSelect = (_: boolean) => {
+        if (currentDialogIdx < characterDialogs.length - 1) {
+            setCurrentDialogIdx(currentDialogIdx + 1);
+        }
+    };
+
     return (
         <div className="">
             <Background src="/backgrounds/island.png" opacity={100} />
             <div className="flex flex-row gap-2 relative pt-[200px]">
                 <div className="flex flex-col gap-2 relative">
                     {/* Other characters that aren't the current character  */}
-                    <div className="absolute -z-10 left-[400px] -top-[140px] flex flex-row">
+                    <div className="absolute z-10 left-[400px] -top-[140px] flex flex-row">
                         {selectedCharacters.map((character) =>
                             character != currentCharacter ? (
                                 <CharacterHeadshot
-                                    onSelect={() => {}}
+                                    onSelect={handleSelect}
                                     selected={false}
                                     size="small"
                                     showName={true}
@@ -124,6 +161,11 @@ export default function Chat({ onDone = () => {} }: { onDone?: () => void }) {
                                     key={character}
                                     id={character}
                                     disabled={false}
+                                    showSpeechBubble={
+                                        currentDialogIdx <
+                                            characterDialogs.length - 1 &&
+                                        !isTalking
+                                    }
                                 />
                             ) : null
                         )}
@@ -147,14 +189,17 @@ export default function Chat({ onDone = () => {} }: { onDone?: () => void }) {
                         {characterMap[currentCharacter].name}
                     </div>
                     <DialogBox
-                        dialog={characterDialog}
+                        dialog={characterDialogs[currentDialogIdx].response}
                         width={500}
                         height={160}
                         maxHeight={300}
                         onStreamingChange={setIsTalking}
                     />
                     <MessageInput
-                        disabled={turns > maxTurns}
+                        disabled={
+                            turns > maxTurns ||
+                            currentDialogIdx < characterDialogs.length - 1
+                        }
                         value={userDialog}
                         onChange={setUserDialog}
                         onSend={handleSend}

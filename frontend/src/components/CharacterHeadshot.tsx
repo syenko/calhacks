@@ -12,6 +12,7 @@ export default function CharacterHeadshot({
     size = "small",
     showName = false,
     showHoverEffect = false,
+    showSpeechBubble = false,
     onSelect = (selected: boolean) => {},
     selected = false,
     disabled = false,
@@ -20,6 +21,7 @@ export default function CharacterHeadshot({
     size?: "small" | "large";
     showName?: boolean;
     showHoverEffect?: boolean;
+    showSpeechBubble?: boolean;
     onSelect: (selected: boolean) => void;
     selected: boolean;
     disabled: boolean;
@@ -27,7 +29,8 @@ export default function CharacterHeadshot({
     const dimensions = size === "small" ? 96 : 192;
 
     const handleClick = () => {
-        if (showHoverEffect && !disabled) {
+        console.log("HEYYYY");
+        if ((showHoverEffect || showSpeechBubble) && !disabled) {
             onSelect(!selected);
         }
     };
@@ -36,12 +39,14 @@ export default function CharacterHeadshot({
         <div
             onClick={handleClick}
             className={`flex flex-col items-center p-2 ${
-                disabled ? "opacity-50" : ""
-            }`}
+                showSpeechBubble ? "cursor-pointer!" : ""
+            } ${disabled ? "opacity-50" : ""}`}
         >
             <div
-                className={`${size === "small" ? "border-4 " : "border-8 "} ${
-                    showHoverEffect && !disabled
+                className={`relative ${
+                    size === "small" ? "border-4 " : "border-8 "
+                } ${
+                    (showHoverEffect || showSpeechBubble) && !disabled
                         ? selected
                             ? "border-yellow-600"
                             : "hover:border-yellow-600"
@@ -49,6 +54,62 @@ export default function CharacterHeadshot({
                 } border-black`}
                 style={{ width: `${dimensions}px`, height: `${dimensions}px` }}
             >
+                {/* Speech bubble indicator */}
+                {showSpeechBubble && (
+                    <div
+                        className="absolute -top-4 -left-4 z-10"
+                        style={{ width: "40px", height: "32px" }}
+                    >
+                        {/* SVG Speech Bubble */}
+                        <svg
+                            width="40"
+                            height="32"
+                            viewBox="0 0 40 32"
+                            xmlns="http://www.w3.org/2000/svg"
+                        >
+                            {/* Outer black border */}
+                            <rect
+                                x="4"
+                                y="0"
+                                width="32"
+                                height="24"
+                                fill="black"
+                            />
+
+                            {/* Inner white background */}
+                            <rect
+                                x="6"
+                                y="2"
+                                width="28"
+                                height="20"
+                                fill="white"
+                            />
+
+                            {/* Three dots */}
+                            <rect
+                                x="12"
+                                y="10"
+                                width="4"
+                                height="4"
+                                fill="black"
+                            />
+                            <rect
+                                x="18"
+                                y="10"
+                                width="4"
+                                height="4"
+                                fill="black"
+                            />
+                            <rect
+                                x="24"
+                                y="10"
+                                width="4"
+                                height="4"
+                                fill="black"
+                            />
+                        </svg>
+                    </div>
+                )}
                 <div
                     className={`w-full h-full ${
                         size === "small" ? "border-4 " : "border-6 "
