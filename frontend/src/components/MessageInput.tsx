@@ -61,7 +61,7 @@ export default function MessageInput({
                         y={PIXEL_SIZE}
                         width={width - buttonWidth - 16 - PIXEL_SIZE * 2}
                         height={height - PIXEL_SIZE * 2}
-                        fill="white"
+                        fill={disabled ? "#9ca3af" : "white"}
                     />
 
                     {/* Corner decorations */}
@@ -128,6 +128,17 @@ export default function MessageInput({
                         height={PIXEL_SIZE}
                         fill="#3b82f6"
                     />
+
+                    {disabled && (
+                        <rect
+                            x={PIXEL_SIZE}
+                            y={PIXEL_SIZE}
+                            width={width - buttonWidth - 16 - PIXEL_SIZE * 2}
+                            height={height - PIXEL_SIZE * 2}
+                            fill="#9ca3af"
+                            opacity={0.5}
+                        />
+                    )}
                 </svg>
 
                 {/* Input field */}
@@ -137,6 +148,7 @@ export default function MessageInput({
                     onChange={(e) => onChange(e.target.value)}
                     onKeyPress={handleKeyPress}
                     placeholder={placeholder}
+                    disabled={disabled}
                     className="relative z-10 w-full h-full px-6 bg-transparent text-black text-lg outline-none"
                 />
             </div>
@@ -144,7 +156,7 @@ export default function MessageInput({
             {/* Pixel Art Send Button */}
             <PixelButton
                 onClick={onSend}
-                disabled={disabled}
+                disabled={value.length === 0}
                 width={buttonWidth}
                 height={height}
                 color="green"
