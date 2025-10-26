@@ -55,10 +55,17 @@ export default function Select() {
     }
 
     function handleDateSelect() {
-        if (maxSelected === 2) {
+        if (maxSelected === 1) {
+            // TODO: fetch to start individual chat
+        } else if (maxSelected === 2) {
+            // TODO: fetch to start group chat
             setGroupDates([...groupDates, selectedCharacters]);
         }
         router.push("/chat");
+    }
+
+    function handleAccuse() {
+        router.push("/accuse");
     }
 
     return (
@@ -120,16 +127,17 @@ export default function Select() {
                             Go to Group Dates
                         </PixelButton>
                     )}
-                    {maxSelected === 2 && groupDates.length > 0 && (
-                        <PixelButton
-                            height={60}
-                            width={150}
-                            color="red"
-                            onClick={handleDateSelect}
-                        >
-                            Accuse
-                        </PixelButton>
-                    )}
+                    {maxSelected === 2 &&
+                        groupDates.length >= MAX_GROUP_DATES && (
+                            <PixelButton
+                                height={60}
+                                width={150}
+                                color="red"
+                                onClick={handleAccuse}
+                            >
+                                Accuse
+                            </PixelButton>
+                        )}
                 </div>
             </div>
         </div>
