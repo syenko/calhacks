@@ -20,6 +20,7 @@ export default function Chat({ onDone = () => {} }: { onDone?: () => void }) {
         selectedCharacters,
         maxTurns,
         individualTurns,
+        maxSelected,
         setSelectedCharacters,
         setIndividualTurns,
     } = useGame();
@@ -42,6 +43,14 @@ export default function Chat({ onDone = () => {} }: { onDone?: () => void }) {
             return;
         }
 
+        // individual date
+        if (maxSelected === 1) {
+            // TODO: fetch to query individual date
+        }
+        // group date
+        else if (maxSelected === 2) {
+            // TODO: fetch to query group date
+        }
         // fetch("https://my-backend.com/ask", {
         //     // TODO: replace with actual backend URL
         //     method: "POST",

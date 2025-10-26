@@ -14,6 +14,8 @@ interface GameContextType {
     setIndividualTurns: (individualTurns: Map<CharacterId, number>) => void;
     groupDates: CharacterId[][];
     setGroupDates: (groupDates: CharacterId[][]) => void;
+    notes: string;
+    setNotes: (notes: string) => void;
 }
 
 export const GameContext = createContext<GameContextType>({
@@ -32,6 +34,8 @@ export const GameContext = createContext<GameContextType>({
     setIndividualTurns: () => {},
     groupDates: [],
     setGroupDates: () => {},
+    notes: "",
+    setNotes: () => {},
 });
 
 export const GameProvider = ({ children }: { children: React.ReactNode }) => {
@@ -51,6 +55,7 @@ export const GameProvider = ({ children }: { children: React.ReactNode }) => {
             [CharacterId.Drew, 1],
         ])
     );
+    const [notes, setNotes] = useState<string>("");
     return (
         <GameContext.Provider
             value={{
@@ -64,6 +69,8 @@ export const GameProvider = ({ children }: { children: React.ReactNode }) => {
                 setIndividualTurns,
                 groupDates,
                 setGroupDates,
+                notes,
+                setNotes,
             }}
         >
             {children}
