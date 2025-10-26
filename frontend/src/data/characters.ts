@@ -3,7 +3,7 @@ export enum CharacterId {
     Sienna = "sienna",
     Grace = "grace",
     Drew = "drew",
-    Hunter = "hunter",
+    // Hunter = "hunter",
 }
 
 export type Character = {
@@ -16,7 +16,7 @@ export const characterMap: Record<CharacterId, Character> = {
     [CharacterId.Sienna]: { name: "Sienna", folder: "sienna" },
     [CharacterId.Grace]: { name: "Grace", folder: "grace" },
     [CharacterId.Drew]: { name: "Drew", folder: "drew" },
-    [CharacterId.Hunter]: { name: "Hunter", folder: "hunter" },
+    // [CharacterId.Hunter]: { name: "Hunter", folder: "hunter" },
 };
 
 export function getCharacterImages(id: CharacterId) {
