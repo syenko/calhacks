@@ -8,8 +8,13 @@ import { useRouter } from "next/navigation";
 import { useGame } from "@/context/GameContext";
 
 export default function Select() {
-    const { selectedCharacters, setSelectedCharacters, maxSelected } =
-        useGame();
+    const {
+        selectedCharacters,
+        setSelectedCharacters,
+        maxSelected,
+        individualTurns,
+        maxTurns,
+    } = useGame();
     const router = useRouter();
 
     const handleSelect = (character: CharacterId, selected: boolean) => {
@@ -43,6 +48,10 @@ export default function Select() {
                         key={character}
                         id={character}
                         size="large"
+                        disabled={
+                            maxSelected === 1 &&
+                            (individualTurns.get(character) ?? 0) >= maxTurns
+                        }
                     />
                 ))}
             </div>

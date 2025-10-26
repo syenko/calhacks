@@ -1,7 +1,8 @@
 import { PIXEL_SIZE } from "@/data/constants";
 
 interface ProgressBarProps {
-    progressState: number; // 0-100
+    cur: number;
+    max: number;
     width?: number;
     height?: number;
     className?: string;
@@ -10,7 +11,8 @@ interface ProgressBarProps {
 }
 
 export default function ProgressBar({
-    progressState,
+    cur,
+    max,
     width = 300,
     height = 40,
     className = "",
@@ -18,7 +20,7 @@ export default function ProgressBar({
     backgroundColor = "#e5e7eb", // gray
 }: ProgressBarProps) {
     // Clamp progress between 0 and 100
-    const clampedProgress = Math.max(0, Math.min(100, progressState));
+    const clampedProgress = Math.max(0, Math.min(100, (cur / max) * 100));
 
     // Calculate inner dimensions (excluding border)
     const innerWidth = width - PIXEL_SIZE * 2;
@@ -107,7 +109,7 @@ export default function ProgressBar({
             {/* Progress percentage text */}
             <div className="absolute inset-0 flex items-center justify-center">
                 <span className="relative z-10 text-xs font-bold text-white drop-shadow-[0_1px_1px_rgba(0,0,0,0.8)]">
-                    {Math.round(clampedProgress)}%
+                    {cur} / {max}
                 </span>
             </div>
         </div>

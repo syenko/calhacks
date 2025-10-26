@@ -8,14 +8,23 @@ interface GameContextType {
     maxTurns: number;
     maxSelected: number;
     setMaxSelected: (maxSelected: number) => void;
+    individualTurns: Map<CharacterId, number>;
+    setIndividualTurns: (individualTurns: Map<CharacterId, number>) => void;
 }
 
 export const GameContext = createContext<GameContextType>({
     selectedCharacters: [],
     setSelectedCharacters: () => {},
-    maxTurns: 10,
-    maxSelected: 2,
+    maxTurns: 6,
+    maxSelected: 1,
     setMaxSelected: () => {},
+    individualTurns: new Map<CharacterId, number>([
+        [CharacterId.Daisy, 1],
+        [CharacterId.Sienna, 1],
+        [CharacterId.Grace, 1],
+        [CharacterId.Drew, 1],
+    ]),
+    setIndividualTurns: () => {},
 });
 
 export const GameProvider = ({ children }: { children: React.ReactNode }) => {
@@ -23,8 +32,17 @@ export const GameProvider = ({ children }: { children: React.ReactNode }) => {
         []
     );
     const maxTurns = 6;
-    const [maxSelected, setMaxSelected] = useState<number>(2);
-
+    const [maxSelected, setMaxSelected] = useState<number>(1);
+    const [individualTurns, setIndividualTurns] = useState<
+        Map<CharacterId, number>
+    >(
+        new Map<CharacterId, number>([
+            [CharacterId.Daisy, 1],
+            [CharacterId.Sienna, 1],
+            [CharacterId.Grace, 1],
+            [CharacterId.Drew, 1],
+        ])
+    );
     return (
         <GameContext.Provider
             value={{
@@ -33,6 +51,8 @@ export const GameProvider = ({ children }: { children: React.ReactNode }) => {
                 maxTurns,
                 maxSelected,
                 setMaxSelected,
+                individualTurns,
+                setIndividualTurns,
             }}
         >
             {children}

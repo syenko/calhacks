@@ -14,6 +14,7 @@ export default function CharacterHeadshot({
     showHoverEffect = false,
     onSelect = (selected: boolean) => {},
     selected = false,
+    disabled = false,
 }: {
     id: CharacterId;
     size?: "small" | "large";
@@ -21,20 +22,26 @@ export default function CharacterHeadshot({
     showHoverEffect?: boolean;
     onSelect: (selected: boolean) => void;
     selected: boolean;
+    disabled: boolean;
 }) {
     const dimensions = size === "small" ? 96 : 192;
 
     const handleClick = () => {
-        if (showHoverEffect) {
+        if (showHoverEffect && !disabled) {
             onSelect(!selected);
         }
     };
 
     return (
-        <div onClick={handleClick} className="flex flex-col items-center p-2">
+        <div
+            onClick={handleClick}
+            className={`flex flex-col items-center p-2 ${
+                disabled ? "opacity-50" : ""
+            }`}
+        >
             <div
                 className={`${size === "small" ? "border-4 " : "border-8 "} ${
-                    showHoverEffect
+                    showHoverEffect && !disabled
                         ? selected
                             ? "border-yellow-600"
                             : "hover:border-yellow-600"
