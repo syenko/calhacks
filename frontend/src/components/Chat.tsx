@@ -33,9 +33,7 @@ export default function Chat({ onDone = () => {} }: { onDone?: () => void }) {
     );
     const [isTalking, setIsTalking] = useState(false);
     const [turns, setTurns] = useState(
-        selectedCharacters.length === 1
-            ? individualTurns.get(currentCharacter) ?? 1
-            : 1
+        maxSelected === 1 ? individualTurns.get(currentCharacter) ?? 1 : 1
     );
     const router = useRouter();
 
@@ -46,7 +44,7 @@ export default function Chat({ onDone = () => {} }: { onDone?: () => void }) {
 
         // individual date
         if (maxSelected === 1) {
-            // TODO: fetch to query individual date
+            // fetch to query individual date
             fetch(`${BACKEND_URL}/do_chat`, {
                 method: "POST",
                 headers: {
@@ -94,7 +92,7 @@ export default function Chat({ onDone = () => {} }: { onDone?: () => void }) {
         }
 
         setCharacterDialog("Thinking...");
-        if (selectedCharacters.length === 1) {
+        if (maxSelected === 1) {
             setIndividualTurns(
                 new Map(individualTurns).set(currentCharacter, turns + 1)
             );
@@ -104,8 +102,8 @@ export default function Chat({ onDone = () => {} }: { onDone?: () => void }) {
     };
 
     const handleBack = () => {
-        setSelectedCharacters([]);
         router.push("/select");
+        setSelectedCharacters([]);
     };
 
     return (
@@ -169,11 +167,11 @@ export default function Chat({ onDone = () => {} }: { onDone?: () => void }) {
                     />
                     <PixelButton
                         onClick={handleBack}
-                        width={selectedCharacters.length === 1 ? 100 : 300}
+                        width={maxSelected === 1 ? 100 : 300}
                         height={40}
                         color="red"
                     >
-                        {selectedCharacters.length === 1
+                        {maxSelected === 1
                             ? "Go Back"
                             : "End Date (cannot be undone)"}
                     </PixelButton>
