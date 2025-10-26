@@ -1,4 +1,5 @@
 import { PIXEL_SIZE } from "@/data/constants";
+import PixelButton from "./PixelButton";
 
 interface MessageInputProps {
     value: string;
@@ -141,79 +142,15 @@ export default function MessageInput({
             </div>
 
             {/* Pixel Art Send Button */}
-            <button
+            <PixelButton
                 onClick={onSend}
                 disabled={disabled}
-                className="relative group disabled:cursor-not-allowed"
-                style={{ width: `${buttonWidth}px`, height: `${height}px` }}
+                width={buttonWidth}
+                height={height}
+                color="green"
             >
-                {/* SVG Button Background */}
-                <svg
-                    className="absolute inset-0 w-full h-full transition-transform group-hover:scale-105 group-active:scale-95 group-disabled:scale-100"
-                    viewBox={`0 0 ${buttonWidth} ${height}`}
-                    preserveAspectRatio="xMidYMid meet"
-                    xmlns="http://www.w3.org/2000/svg"
-                >
-                    {/* Outer black border */}
-                    <rect
-                        x="0"
-                        y="0"
-                        width={buttonWidth}
-                        height={height}
-                        fill="black"
-                    />
-
-                    {/* Button background - muted green or gray when disabled */}
-                    <rect
-                        x={PIXEL_SIZE}
-                        y={PIXEL_SIZE}
-                        width={buttonWidth - PIXEL_SIZE * 2}
-                        height={height - PIXEL_SIZE * 2}
-                        fill={disabled ? "#6b7280" : "#86a889"}
-                    />
-
-                    {/* Highlight effect - top left */}
-                    <rect
-                        x={PIXEL_SIZE}
-                        y={PIXEL_SIZE}
-                        width={buttonWidth - PIXEL_SIZE * 2}
-                        height={PIXEL_SIZE}
-                        fill={disabled ? "#9ca3af" : "#a8c5ab"}
-                    />
-                    <rect
-                        x={PIXEL_SIZE}
-                        y={PIXEL_SIZE}
-                        width={PIXEL_SIZE}
-                        height={height - PIXEL_SIZE * 2}
-                        fill={disabled ? "#9ca3af" : "#a8c5ab"}
-                    />
-
-                    {/* Shadow effect - bottom right */}
-                    <rect
-                        x={PIXEL_SIZE}
-                        y={height - PIXEL_SIZE * 2}
-                        width={buttonWidth - PIXEL_SIZE * 2}
-                        height={PIXEL_SIZE}
-                        fill={disabled ? "#4b5563" : "#5c7d5f"}
-                    />
-                    <rect
-                        x={buttonWidth - PIXEL_SIZE * 2}
-                        y={PIXEL_SIZE}
-                        width={PIXEL_SIZE}
-                        height={height - PIXEL_SIZE * 2}
-                        fill={disabled ? "#4b5563" : "#5c7d5f"}
-                    />
-                </svg>
-
-                {/* Button text */}
-                <span
-                    className={`relative z-10 font-bold text-lg ${
-                        disabled ? "text-gray-400" : "text-white"
-                    }`}
-                >
-                    SEND
-                </span>
-            </button>
+                SEND
+            </PixelButton>
         </div>
     );
 }
